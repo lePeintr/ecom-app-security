@@ -1,0 +1,25 @@
+1-Si par defaut au lancement de l'application spring boot security ne genere pas un mot de passe par user, il faut:
+_ S'assurer d'avoir cette dependence:
+        <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+-Ajouter ces lignes dans application properties
+spring.security.user.name=user
+spring.security.user.password=
+logging.level.org.springframework.security=INFO
+Après ces 2 elements ajoueté ca doit fonctionner normalement
+
+
+Pour les JWT encoder et JWTDecoder on aura besoin de l'algorithme RSA(pair de cle :public-private)
+Generer la keypair
+openssl genrsa -out keypair.pem 2048
+Generer la cle public
+openssl rsa -in keypair.pem -pubout -out public.pem
+Generer la cle privée
+openssl pkcs8 -topk8 -inform PEM -nocrypt -in keypair.pem -out private.pem
+
+
+Verifier que quand on fait un post dans postman vers /token on a access token qui est retourné
+Regarder les details de l'access token sur jwt.io
+Tester sur postman un envoie de requete avec l'accessToken à la place de l'userName et Password
